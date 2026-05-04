@@ -33,13 +33,13 @@ jobs:
       - name: Compilar o projeto
         run: mvn clean package -DskipTests
 
-      - name: Aguardar PostgreSQL
-        run: sleep 10
-
-      - name: Executar aplicação Spring Boot
+      - name: Iniciar aplicação Spring Boot em background
         run: |
-          java -jar target/carbono-rural-api-0.0.1-SNAPSHOT.jar &
-          sleep 20
+          nohup java -jar target/carbono-rural-api-0.0.1-SNAPSHOT.jar &
+          sleep 30
+
+      - name: Verificar se a API está rodando
+        run: curl -s http://localhost:8080/animais || sleep 10 && curl -s http://localhost:8080/animais
 
       - name: Executar testes BDD
         run: mvn test
