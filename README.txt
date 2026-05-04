@@ -1,177 +1,119 @@
 # Carbono Rural API
 
-API REST desenvolvida com Spring Boot para gerenciamento de animais no contexto de cálculo de emissões de carbono rural.
+API REST desenvolvida com Spring Boot para gerenciamento de animais em um cenário de cálculo de emissões de carbono rural.
 
 ---
 
-# Descrição
+## Descrição
 
-Este projeto implementa um CRUD completo (Create, Read, Update, Delete) para a entidade Animal, permitindo:
+O projeto implementa um CRUD completo para a entidade **Animal**, permitindo:
 
-* Cadastrar animais
-* Listar animais
-* Buscar por ID
-* Atualizar informações
-* Remover registros
+- Cadastrar animais
+- Listar todos os registros
+- Buscar por ID
+- Atualizar dados
+- Remover registros
 
-A aplicação utiliza:
-
-* Java 17
-* Spring Boot
-* Spring Data JPA
-* Banco H2 (em memória)
-* Docker
+A aplicação segue a arquitetura padrão em camadas (controller, service, repository, model) e utiliza persistência com JPA.
 
 ---
 
-# Tecnologias utilizadas
+## Tecnologias utilizadas
 
-* Java 17
-* Spring Boot
-* Maven
-* JPA / Hibernate
-* H2 Database
-* Docker
+- Java 17
+- Spring Boot
+- Spring Data JPA
+- Maven
+- PostgreSQL
+- Docker
+- GitHub Actions (CI)
 
 ---
 
-# Como executar o projeto
+## Como executar o projeto
 
-Pré-requisitos:
+### Pré-requisitos
 
-* Docker instalado
+- Docker instalado
 
-Passo a passo:
+### Execução com Docker Compose
 
-1. Gerar o .jar
-
-bash
-./mvnw clean package
-
-
-2. Build da imagem Docker
-
-bash
-docker build -t carbono-api .
-
-3. Rodar o container
-
-bash
-docker run -p 8080:8080 carbono-api
-
+```bash
+docker-compose up --build
 A aplicação estará disponível em:
 
-http://localhost:8080 (abrir no navegador web)
-
----
-
-# Endpoints da API
-
-1. Criar animal
-
-http
+http://localhost:8080
+Endpoints da API
+Criar animal
 POST /animais
 Content-Type: application/json
-
-json
 {
   "nome": "Vaca",
   "especie": "Bovino"
 }
-
-
-2. Listar animais
-
-http
+Listar animais
 GET /animais
-
-
-3. Buscar por ID
-
-http
+Buscar por ID
 GET /animais/{id}
-
-4. Atualizar animal
-
-http
+Atualizar animal
 PUT /animais/{id}
 Content-Type: application/json
-
-
-json
 {
   "nome": "Vaca Atualizada",
   "especie": "Bovino Premium"
 }
-
-
-
-5. Deletar animal
-
-http
+Deletar animal
 DELETE /animais/{id}
+Banco de dados
+A aplicação utiliza PostgreSQL via Docker:
 
+Porta: 5432
 
----
+Database: carbono
 
-# Banco de dados
+Usuário: postgres
 
-A aplicação utiliza o banco H2 em memória, ou seja:
+Senha: postgres
 
-* Os dados são apagados ao reiniciar a aplicação
-* Ideal para testes e desenvolvimento
-
----
-
-# Console do H2
-
-Acesse:
-
-
-http://localhost:8080/h2-console
-
-
-# Configurações:
-
-
-JDBC URL: jdbc:h2:mem:testdb
-User: sa
-Password: (vazio)
-
-
----
-
-# Estrutura do projeto
-
-
+Estrutura do projeto
 src/main/java/com/carbonorural/carbonoruralapi
 ├── controller
 ├── service
 ├── repository
 ├── model
 
+CI (GitHub Actions)
 
+Este projeto possui um pipeline de Integração Contínua configurado com GitHub Actions.
 
-# Observações
+O pipeline é executado automaticamente quando há:
 
-* A aplicação roda dentro de um container Docker
-* Não é necessário instalar Java na máquina para execução (apenas Docker)
-* O banco H2 é reiniciado a cada execução
+push na branch main
+pull request para main
+Etapas do CI:
+Checkout do código
+Validação básica do repositório
 
----
+O status pode ser visualizado na aba Actions do repositório.
 
-# Status do projeto
+Observações
+A aplicação é executada em container Docker
 
-* API REST funcional
-* CRUD completo
-* Persistência com JPA
-* Containerização com Docker
+O banco de dados é provisionado automaticamente via Docker Compose
 
----
+Não é necessário instalar Java localmente para execução
 
-# Autor
+Status do projeto
+API REST funcional
 
+CRUD completo implementado
+
+Integração com banco relacional
+
+Containerização com Docker
+
+Autor
 Lucas Kieffer Leal
 RM 567193
-Análise e Desenvolvimento de Sistemas (On-Line)
-Fase 6 - DevOps
+Análise e Desenvolvimento de Sistemas
+FIAP

@@ -1,0 +1,50 @@
+name: Testes Automatizados BDD
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_DB: carbono
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Java 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Compilar o projeto
+        run: mvn clean package -DskipTests
+
+      - name: Construir e iniciar containers
+        run: docker compose up -d --build
+
+      - name: Aguardar API iniciar
+        run: sleep 30
+
+      - name: Executar testes BDD
+        run: mvn test
+
+      - name: Publicar relatório Cucumber
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cucumber-report
+          path: target/cucumber-report.json

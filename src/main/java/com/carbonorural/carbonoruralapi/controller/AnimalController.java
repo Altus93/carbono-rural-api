@@ -3,6 +3,7 @@ package com.carbonorural.carbonoruralapi.controller;
 import com.carbonorural.carbonoruralapi.model.Animal;
 import com.carbonorural.carbonoruralapi.service.AnimalService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,8 +21,12 @@ public class AnimalController {
     }
 
     @GetMapping("/{id}")
-    public Animal buscarPorId(@PathVariable Long id) {
-        return service.buscarPorId(id);
+    public ResponseEntity<Animal> buscarPorId(@PathVariable Long id) {
+        Animal animal = service.buscarPorId(id);
+        if (animal == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(animal);
     }
 
     @PostMapping
