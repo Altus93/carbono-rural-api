@@ -33,11 +33,13 @@ jobs:
       - name: Compilar o projeto
         run: mvn clean package -DskipTests
 
-      - name: Construir e iniciar containers
-        run: docker compose up -d --build
+      - name: Aguardar PostgreSQL
+        run: sleep 10
 
-      - name: Aguardar API iniciar
-        run: sleep 30
+      - name: Executar aplicação Spring Boot
+        run: |
+          java -jar target/carbono-rural-api-0.0.1-SNAPSHOT.jar &
+          sleep 20
 
       - name: Executar testes BDD
         run: mvn test
